@@ -14,8 +14,11 @@ extension Gatekeeper where Value == Bool {
     
     @discardableResult
     public mutating func attemptPassage() -> Bool {
-        value = !value
-        return !value
+        if value {
+            value = false
+            return true
+        }
+        return false
     }
     
     public func passageAllowed() -> Bool {
@@ -72,6 +75,29 @@ public struct ChangedValueGatekeeper<Value> where Value: Equatable {
     @discardableResult
     public mutating func attemptPassage(_ newVal: Value) -> Bool {
         if value != newVal {
+            value = newVal
+            return true
+        }
+        return false
+    }
+    
+    public mutating func set(_ newVal: Value) {
+        value = newVal
+    }
+}
+
+// MARK: - GreaterValueGatekeeper
+
+public struct GreaterValueGatekeeper<Value> where Value: Comparable {
+    private var value: Value
+    
+    public init(defaultValue: Value) {
+        self.value = defaultValue
+    }
+    
+    @discardableResult
+    public mutating func attemptPassage(_ newVal: Value) -> Bool {
+        if value < newVal {
             value = newVal
             return true
         }
