@@ -1,3 +1,3 @@
 # GatekeeperKit
 
-A description of this package.
+Provides a simple way to manage control flow in Swift.
